@@ -16,15 +16,15 @@ The following are common parameters which it is possible to specify in the confi
 |logging.maxRetainedFiles| Indicates the maximum amount of log files retained. When this threshold is passed, files are deleted. | An integer | 10 | Yes |
 |logging.useUTC| If set to true, logs will be reported in UTC time. Is set to false or missing, the timezone of the machine will be used. This parameter affects only the timestamp reported at the beginning of each log entry, it doesn't affect the time reported in the data/alerts which is always in UTC.  | A boolean | true | No |
 |checkForUpdatesAtBoot| Indicates if at each booth the application should check for updates. If an update is available, a notification will be sent to the default group. If you restart the process often (e.g., debugging, experimenting etc.) set this to false to avoid notifications. Anyway, BGPalerter checks for updates every 10 days.| A boolean | true | Yes |
-|processMonitors| A list of modules allowing various ways to check for the status of BGPalerter (e.g., API, heartbeat). See [here](process-monitors.md) for more information. | | | No | 
+|processMonitors| A list of modules allowing various ways to check for the status of BGPalerter (e.g., API, heartbeat). See [here](process-monitors.md) for more information. | | | No |
 |httpProxy| Defines the HTTP/HTTPS proxy server to be used by BGPalerter and its submodules (reporters/connectors/monitors). See [here](http-proxy.md) for more information. | A string | http://usr:psw@ prxy.org:8080 | No |
 |persistStatus| If set to true, when BGPalerter is restarted the list of alerts already sent is recovered. This avoids duplicated alerts. The process must be able to write on disc inside `.cache/`. | A boolean | true | No |
 |generatePrefixListEveryDays| This parameter allows to automatically re-generate the prefix list after the specified amount of days. Set to 0 to disable it. It works only if you have one prefix list file and if you have used BGPalerter to automatically generate the file (and not if you edited prefixes.yml manually). | An integer | 0 | No |
 |rpki| A dictionary containing the RPKI configuration (see [here](rpki.md) for more details). |  |  | Yes |
-|groupsFile| A file containing user groups definition (see [here](usergroups.md) for more details). | A string | groups.yml | No | 
-|rest| A dictionary containing the parameters to run the server for all APIs provided by BGPalerter. | | | No | 
-|rest.host| The IP/host on which the APIs will be reachable. The default value is localhost, this means the API will not be reachable from another host. To make it public use null or 0.0.0.0. | A string or null | localhost | No | 
-|rest.port| The port of the REST API. The default value is 8011. | An integer | 8011 | No | 
+|groupsFile| A file containing user groups definition (see [here](usergroups.md) for more details). | A string | groups.yml | No |
+|rest| A dictionary containing the parameters to run the server for all APIs provided by BGPalerter. | | | No |
+|rest.host| The IP/host on which the APIs will be reachable. The default value is localhost, this means the API will not be reachable from another host. To make it public use null or 0.0.0.0. | A string or null | localhost | No |
+|rest.port| The port of the REST API. The default value is 8011. | An integer | 8011 | No |
 
 The following are advanced parameters, please don't touch them if you are not doing research/experiments.
 
@@ -33,11 +33,11 @@ The following are advanced parameters, please don't touch them if you are not do
 |environment| You can specify various environments. The values "production" (not verbose) and "development" (verbose) will affect the verbosity of the error/debug logs. The value "research" is explained [here](research.md). Other values don't affect the functionalities, they will be used to identify from which environment the log is coming from. | A string | production | Yes |
 |alertOnlyOnce| A boolean that, if set to true, will prevent repetitions of the same alert in the future (which it doesn't make sense for production purposes). In this case notificationIntervalSeconds will be ignored. If set to true, the signature of all alerts will be cached in order to recognize if they already happened in the past. This may lead to a memory leak if the amount of alerts is considerable. | A boolean | false | No |
 |pidFile| A file where the PID of the BGP alerter main process is recorded. | A string |  bgpalerter.pid | No |
-|maxMessagesPerSecond| A cap to the BGP messages received, over such cap the messages will be dropped. The default value is way above any production rate. Changing this value may be useful only for research measurements on the entire address space. | An integer | 6000 | No | 
-|multiProcess| If set to true, the processing of the BGP messages will be distributed on two processes. This may be useful for research measurements on the entire address space. It is discouraged to set this to true for normal production monitoring. | A boolean | false | No | 
-|fadeOffSeconds| If an alert is generated but cannot be yet squashed (e.g., not reached yet the `thresholdMinPeers`), it is inserted in a temporary list which is garbage collected after the amount of seconds expressed in `fadeOffSeconds`. Due to BGP propagation times, values below 5 minutes can result in false negatives.| An integer | 360 | No | 
-|checkFadeOffGroupsSeconds| Amount of seconds after which the process checks for fading off alerts. | An integer | 30 | No | 
-|volume| Defines a directory that will contain all the files used by BGPalerter. See [here](installation.md#volume) before modifying this. | A string | /home/bgpalerter/ | No | 
+|maxMessagesPerSecond| A cap to the BGP messages received, over such cap the messages will be dropped. The default value is way above any production rate. Changing this value may be useful only for research measurements on the entire address space. | An integer | 6000 | No |
+|multiProcess| If set to true, the processing of the BGP messages will be distributed on two processes. This may be useful for research measurements on the entire address space. It is discouraged to set this to true for normal production monitoring. | A boolean | false | No |
+|fadeOffSeconds| If an alert is generated but cannot be yet squashed (e.g., not reached yet the `thresholdMinPeers`), it is inserted in a temporary list which is garbage collected after the amount of seconds expressed in `fadeOffSeconds`. Due to BGP propagation times, values below 5 minutes can result in false negatives.| An integer | 360 | No |
+|checkFadeOffGroupsSeconds| Amount of seconds after which the process checks for fading off alerts. | An integer | 30 | No |
+|volume| Defines a directory that will contain all the files used by BGPalerter. See [here](installation.md#volume) before modifying this. | A string | /home/bgpalerter/ | No |
 
 
 
@@ -59,7 +59,7 @@ Example of composition:
 connectors:
   - file: connectorRIS
     name: ris
-    
+
 monitors:
   - file: monitorHijack
     channel: hijack
@@ -106,7 +106,7 @@ Each connector is composed of:
 |---|---|
 |file|Name of the file containing the connector implementation. Report implementations are in the `connectors` directory. |
 |params| A dictionary of parameters that can be useful for the functioning of the connector.  E.g. the data source url, password, socket options|
-|name| The name that will be used to identify this connector and to annotate logs and messages. | 
+|name| The name that will be used to identify this connector and to annotate logs and messages. |
 
 
 > Connectors will always send the BGP updates to all the channels. The BGP updates have all the same format.
@@ -123,7 +123,7 @@ It connects to RIPE RIS https://ris-live.ripe.net/ and receives BGP updates comi
 
 Parameters for this connector module:
 
-|Parameter| Description| 
+|Parameter| Description|
 |---|---|
 |url| WebSocket end-point of RIS, which currently is `ws://ris-live.ripe.net/v1/ws/` |
 |subscription| Dictionary containing the parameters required by RIS. Refer to the [official documentation](https://ris-live.ripe.net/) for details.|
@@ -134,7 +134,7 @@ Parameters for this connector module:
 |blacklistSources| A list of prefixes, IPs, and AS numbers of blacklisted collectors' peers. Data coming from these collectors' peers will be ignored.|
 
 #### connectorRISDump
-It connects to the RIPEstat's BGPlay API and retrieves a RIS dump about the monitored resources. The retrieved dump is 2 hours old, due to limitations on the API side. 
+It connects to the RIPEstat's BGPlay API and retrieves a RIS dump about the monitored resources. The retrieved dump is 2 hours old, due to limitations on the API side.
 
 Without this connector, when you start BGPalerter the monitoring will start based on new BGP updates. This means that you will not receive alerts before a new BGP update is propagated; e.g., if one of your prefixes is already hijacked when you start BGPalerter, you will not get notified immediately.
 
@@ -167,11 +167,11 @@ Example of alert:
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                       | 
+|Parameter| Description                                                                                                                                                                                                                                                       |
 |---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.|
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.|
-|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy. | 
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy. |
 |maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
 
 
@@ -186,7 +186,7 @@ Example of alert:
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                        | 
+|Parameter| Description                                                                                                                                                                                                                                                        |
 |---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                                |
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition. Useful if you are monitoring a beacon.                                                                                                 |
@@ -197,7 +197,7 @@ Parameters for this monitor module:
 
 This monitor detects BGP updates containing AS_PATH which match particular regular expressions.
 
-> Example: 
+> Example:
 > The prefixes list of BGPalerter has an entry such as:
 > ```yaml
 > 165.254.255.0/24:
@@ -217,7 +217,7 @@ Path is a list of matching rules, in this way multiple matching rules can be def
 
 More about path matching [here](path-matching.md).
 
-> An alert will be generated for example when a BGP announcements for 165.254.255.0/24 or a more specific contains an AS_PATH 
+> An alert will be generated for example when a BGP announcements for 165.254.255.0/24 or a more specific contains an AS_PATH
 > terminating in 2194,1234 but not containing 5054. The generated alert will report the matchDescription field.
 
 Example of alert:
@@ -225,11 +225,11 @@ Example of alert:
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                       | 
+|Parameter| Description                                                                                                                                                                                                                                                       |
 |---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                               |
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.                                                                                                                                       |
-|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 | 
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 |
 |maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
 
 
@@ -241,7 +241,7 @@ This monitor has the logic to detect unexpected change of configuration in the f
 In particular, it will monitor for all the declared prefixes and will trigger an alert when:
 * A sub-prefix of the monitored prefix starts to be announced by the same AS declared for the prefix.
 
-> Example: 
+> Example:
 > The prefixes list of BGPalerter has an entry such as:
 > ```yaml
 > 50.82.0.0/20:
@@ -258,11 +258,11 @@ Example of alert:
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                       | 
+|Parameter| Description                                                                                                                                                                                                                                                       |
 |---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                               |
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.                                                                                                                                       |
-|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 | 
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 |
 |maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
 
 #### monitorAS
@@ -271,21 +271,21 @@ This monitor will listen for all announcements produced by the monitored Autonom
 This is useful if you want to be alerted in case your AS starts announcing something you didn't intend to announce (e.g., misconfiguration, typo).
 
 
-> Example: 
+> Example:
 > The prefixes list of BGPalerter has an options.monitorASns list declared, such as:
 > ```yaml
 > 50.82.0.0/20:
 >    asn: 58302
 >    description: an example
 >    ignoreMorespecifics: false
-> 
+>
 > options:
 >  monitorASns:
 >    58302:
 >      group: default
 > ```
 > If in config.yml monitorAS is enabled, you will receive alerts every time a prefix not already part of the prefixes list is announced by AS58302.
-> 
+>
 > If AS58302 starts announcing 45.230.23.0/24 an alert will be triggered. This happens because such prefix is not already monitored (it's not a sub prefix of 50.82.0.0/20).
 
 You can generate the options block in the prefixes list automatically. Refer to the options `-s` and `-m` of the [auto-configuration](prefixes.md#generate).
@@ -296,17 +296,57 @@ Example of alert:
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                        | 
+|Parameter| Description                                                                                                                                                                                                                                                        |
 |---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                                |
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.                                                                                                                                        |
-|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                  | 
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                  |
 |maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
 |skipPrefixMatch| It allows to send all the AS-related alerts to the AS monitoring rule instead of giving priority to prefix rules. Default `false`.                                                                                                                                 |
 
+
+#### monitorExpectedPrefix
+
+This monitor will listen for all announcements produced by the monitored Autonomous Systems and will detect when a prefix that is included in the list of monitored prefixes is announced.
+This is useful if you want to be alerted when a prefix that is conditionally announced by your AS is announced.
+
+
+> Example:
+> The prefixes list of BGPalerter has an options.monitorASns list declared, such as:
+> ```yaml
+> 50.82.0.0/20:
+>    asn: 58302
+>    description: an example
+>    ignoreMorespecifics: false
+>
+> options:
+>  monitorASns:
+>    58302:
+>      group: default
+> ```
+> If in config.yml monitorAS is enabled, you will receive alerts every time a prefix that is part of the prefixes list is announced by AS58302.
+>
+> If AS58302 starts announcing 50.82.0.0/20 an alert will be triggered. This happens because such prefix is monitored and its announcement is expected.
+
+You can generate the options block in the prefixes list automatically. Refer to the options `-s` and `-m` of the [auto-configuration](prefixes.md#generate).
+
+
+Example of alert:
+> AS2914 is announcing 2.2.2.3/22. This prefix is in the configured list of announced prefixes
+
+Parameters for this monitor module:
+
+|Parameter| Description                                                                                                                                                                                                                                                       |
+|---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                               |
+|notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.                                                                                                                                       |
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 |
+|maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
+
+
 #### monitorRPKI
 
-This monitor will listen for all announcements produced by the monitored Autonomous Systems and for all the announcements 
+This monitor will listen for all announcements produced by the monitored Autonomous Systems and for all the announcements
 involving any of the monitored prefixes (independently of who is announcing them), and it will trigger an alert if any of the announcements is RPKI invalid or not covered by ROAs (optional).
 
 This monitor is particularly useful when:
@@ -314,14 +354,14 @@ This monitor is particularly useful when:
 * During RPKI deployment, since it will let you know if any of your announcements are invalid.
 * After you deployed RPKI, in order to be sure all future BGP configurations will be covered by ROAs.
 
-> Example: 
+> Example:
 > The prefixes list of BGPalerter has the following entries:
 > ```yaml
 > 103.21.244.0/24:
 >    asn: 13335
 >    description: an example
 >    ignoreMorespecifics: false
-> 
+>
 > options:
 >  monitorASns:
 >    13335:
@@ -334,21 +374,21 @@ This monitor is particularly useful when:
 
 
 Examples of alerts:
-> The route 103.21.244.0/24 announced by AS13335 is not RPKI valid  
-> The route 1.2.3.4/24 announced by AS1234 is not covered by a ROA  
-> The route 1.2.3.4/24 announced by AS1234 is no longer covered by a ROA  
+> The route 103.21.244.0/24 announced by AS13335 is not RPKI valid
+> The route 1.2.3.4/24 announced by AS1234 is not covered by a ROA
+> The route 1.2.3.4/24 announced by AS1234 is no longer covered by a ROA
 
 You need to configure your RPKI data source as described [here](rpki.md).
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                       | 
+|Parameter| Description                                                                                                                                                                                                                                                       |
 |---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |checkUncovered|If set to true, the monitor will alert also for prefixes not covered by ROAs in addition of RPKI invalid prefixes.                                                                                                                                                 |
 |checkDisappearing| If set to true, the monitor will check also for disappearing ROAs. Important: set this feature to false if you have monitorROAS enabled; monitorROAS provides diffs including disappearing ROAs.                                                                  |
 |thresholdMinPeers| Minimum number of peers that need to see the BGP update before to trigger an alert.                                                                                                                                                                               |
 |notificationIntervalSeconds| It overwrite the global `notificationIntervalSeconds` for this specific monitor. See [here](#Configuration) the definition.                                                                                                                                       |
-|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 | 
+|noProxy| If there is a global proxy configuration (see [here](http-proxy.md)), this parameter if set to true allows the single module to bypass the proxy.                                                                                                                 |
 |maxDataSamples| Maximum number of collected BGP messages for each alert which doesn't reach yet the `thresholdMinPeers`. Default to 1000. As soon as the `thresholdMinPeers` is reached, the collected BGP messages are flushed, independently from the value of `maxDataSamples`. |
 |cacheValidPrefixesSeconds| Amount of seconds ROAs get cached in order to identify RPKI repository malfunctions (e.g., disappearing ROAs). Default to 7 days.                                                                                                                                 |
 
@@ -361,7 +401,7 @@ You need to configure your RPKI data source as described [here](rpki.md).
 Note, while BGPalerter will perform the check near real time, many RIRs have delayed ROAs publication times.
 
 
-> Example: 
+> Example:
 > The prefixes list of BGPalerter has the following entries:
 > ```yaml
 > 1.2.3.4/24:
@@ -369,7 +409,7 @@ Note, while BGPalerter will perform the check near real time, many RIRs have del
 >    description: an example
 >    ignoreMorespecifics: false
 >    group: noc1
-> 
+>
 > options:
 >  monitorASns:
 >    2914:
@@ -387,7 +427,7 @@ Note, while BGPalerter will perform the check near real time, many RIRs have del
 
 Example of alerts:
 > ROAs change detected: removed <1.2.3.4/24, 1234, 25, apnic>; added <5.5.3.4/24, 1234, 25, apnic>
-> 
+>
 > Possible TA malfunction or incomplete VRP file: 24% of the ROAs disappeared from APNIC
 
 **This monitor also alerts about ROAs expiration.**
@@ -406,13 +446,13 @@ The field `expire` must be the closest expiration time of all of the above.
 
 Example of alerts:
 > The following ROAs will expire in less than 2 hours: <1.2.3.4/24, 1234, 25, apnic>; <5.5.3.4/24, 1234, 25, apnic>
-> 
+>
 > Possible TA malfunction or incomplete VRP file: 24% of the ROAs are expiring in APNIC
 
 
 Parameters for this monitor module:
 
-|Parameter| Description                                                                                                                                                                                                                                                                                                                           | 
+|Parameter| Description                                                                                                                                                                                                                                                                                                                           |
 |---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |enableDiffAlerts| Enables alerts showing edits impacting ROAs for the monitored resources. Default true                                                                                                                                                                                                                                                 |
 |enableExpirationAlerts| Enables alerts about expiring ROAs. Default true.                                                                                                                                                                                                                                                                                     |
@@ -435,4 +475,4 @@ Refer to the [documentation for this monitor](path-neighbors.md).
 
 Reports send/store the alerts, e.g., by email or to a file. Reports can also provide the data triggering such alerts.
 Refer to the [report's documentation](reports.md).
-    
+

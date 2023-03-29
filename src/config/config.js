@@ -55,6 +55,14 @@ export default class Config {
                     }
                 },
                 {
+                    file: "monitorExpectedPrefix",
+                    channel: "announcement",
+                    name: "expected-prefix",
+                    params: {
+                        thresholdMinPeers: 3
+                    }
+                },
+                {
                     file: "monitorVisibility",
                     channel: "visibility",
                     name: "withdrawal-detection",
