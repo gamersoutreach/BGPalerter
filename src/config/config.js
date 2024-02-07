@@ -134,7 +134,7 @@ export default class Config {
                 }
             ],
             notificationIntervalSeconds: 86400,
-            alarmOnlyOnce: false,
+            alertOnlyOnce: false,
             monitoredPrefixesFiles: ["prefixes.yml"],
             persistStatus: true,
             generatePrefixListEveryDays: 0,

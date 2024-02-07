@@ -130,7 +130,7 @@ export default class Monitor {
         };
 
         if (!this.sent[id] ||
-            (!this.config.alertOnlyOnce && now > (this.sent[id] + this.internalConfig.notificationInterval))) {
+            (!(this.config.alertOnlyOnce || this.params.alertOnlyOnce) && now > (this.sent[id] + this.internalConfig.notificationInterval))) {
 
             this.alerts[id] = this.alerts[id] || [];
             this.alerts[id].push(context);
@@ -158,7 +158,7 @@ export default class Monitor {
             this._publishGroupId(id, now);
         }
 
-        if (!this.config.alertOnlyOnce) {
+        if (!(this.config.alertOnlyOnce || this.params.alertOnlyOnce)) {
             for (let id in this.alerts) {
                 if (now > (this.sent[id] + this.internalConfig.notificationInterval)) {
                     delete this.sent[id];
